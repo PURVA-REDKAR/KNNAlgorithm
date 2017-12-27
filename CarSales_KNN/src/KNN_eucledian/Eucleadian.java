@@ -7,9 +7,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
 
 public class Eucleadian {
 	
@@ -104,10 +109,25 @@ public class Eucleadian {
 		eu.getCarListFromExcel();
 
          int k=3; //K values
+         double fouryear,price,fueleff;
+         
+         System.out.println("Enter 4 year value,price and fuel Efficiency");
+         
+         Scanner in = new Scanner(System.in);
+         fouryear = in.nextDouble();
+         price = in.nextDouble();
+         fueleff = in.nextDouble();
+         
+         //4 year Sales
+         
+         
+       //Price in thousands
+         
+         //Fuel efficiency
          
          //distance
          
-         double[] query = {16.0,21.5,28};
+         double[] query = { fouryear,price,fueleff};
          
          for(CarList cars : car_investment){
  			double dist = 0.0;  
@@ -145,7 +165,80 @@ public class Eucleadian {
  				System.out.println(near_invest[x]+" " + x);
  			}
  			
+ 			String ClassMajority = FindMajority(near_invest);
+ 			System.out.println("Class of new instance is: "+ClassMajority); 
 	
 	}
+	
+	private static String FindMajority(String[] majarray)
+	{
+		//find unique
+		Set<String> h = new HashSet<String>(Arrays.asList(majarray));
+		String[] uniqueValues = h.toArray(new String[0]);
+		int[] counts = new int[uniqueValues.length];
+		for (int i = 0; i < uniqueValues.length; i++) {
+			for (int j = 0; j < majarray.length; j++) {
+				if(majarray[j].equals(uniqueValues[i])){
+					counts[i]++;
+				}
+			}        
+		}
+		
+		int max = counts[0];
+		for (int counter = 1; counter < counts.length; counter++) {
+			if (counts[counter] > max) {
+				max = counts[counter];
+			}
+		}
+		System.out.println("max # of occurences: "+max);
+		
+		//find number of occurances or mode of same frequency
+        
+		int freq = 0;
+		for (int counter = 0; counter < counts.length; counter++) {
+			if (counts[counter] == max) {
+				freq++;
+			}
+		}
+		
+		int index = -1;
+		if(freq==1){
+			for (int counter = 0; counter < counts.length; counter++) {
+				if (counts[counter] == max) {
+					index = counter;
+					break;
+				}
+			}
+			return uniqueValues[index];
+		}
+		
+		else{//we have multiple modes
+			int[] i1 = new int[freq];//array of indices of modes
+			System.out.println("multiple majority classes: "+freq+" classes");
+			int ixi = 0;
+			for (int counter = 0; counter < counts.length; counter++) {
+				if (counts[counter] == max) {
+					i1[ixi] = counter;//save index of each max count value
+					ixi++; // increase index of ix array
+				}
+			}
+			
+			
+			
+			for (int counter = 0; counter < i1.length; counter++)         
+				System.out.println("class index: "+i1[counter]);       
 
+			//now choose one at random
+			Random generator = new Random();        
+			//get random number 0 <= rIndex < size of ix
+			int rIndex = generator.nextInt(i1.length);
+			System.out.println("random index: "+rIndex);
+			int nIndex = i1[rIndex];
+			//return unique value at that index 
+			return uniqueValues[nIndex];
+		}
+		
+		
+		
+	}
 }
